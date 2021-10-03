@@ -68,11 +68,21 @@ namespace WPFCalculator
             {
                 //error    
             }
-
-
             Operator = InputTextBox.Text.Substring(iOp, 1).ToCharArray()[0];
-            if (InputTextBox.Text.Substring(0, iOp) == null || InputTextBox.Text.Substring(0, iOp) == "" || InputTextBox.Text.Substring(0, iOp) == String.Empty)
+
+            if (iOp == 0)
+            {
+                if(Operator!='=')
+                
+                    InputTextBox.Text += LastOperator.ToString();
+                InputTextBox.Select(InputTextBox.Text.Length, 0);
+
+
                 return;
+            }
+
+            //if (InputTextBox.Text.Substring(0, iOp) == null || InputTextBox.Text.Substring(0, iOp) == "" || InputTextBox.Text.Substring(0, iOp) == String.Empty)
+            //    return;
             double op1 = Convert.ToDouble(InputTextBox.Text.Substring(0, iOp));
 
             double op2 = Convert.ToDouble(InputTextBox.Text.Substring(iOp + 1, InputTextBox.Text.Length - iOp - 1));
@@ -101,9 +111,10 @@ namespace WPFCalculator
                 Operator = Operator,
                 Result = double.Parse(InputTextBox.Text)
             });
-            //if (LastOperator != '=')
-            //    InputTextBox.Text += LastOperator.ToString();
-
+            if (LastOperator != '=')
+            
+               InputTextBox.Text += LastOperator.ToString();
+            
             InputTextBox.Select(InputTextBox.Text.Length, 0);
 
 
@@ -131,7 +142,6 @@ namespace WPFCalculator
                 InputTextBox.Text = InputTextBox.Text.Remove(InputTextBox.Text.Length - 1, 1);
                 return;
             }
-            if (LastOperator != '=' || b.Content.ToString() == "=")
 
                 if (b.Content.ToString() == "+" ||
                 b.Content.ToString() == "-" ||
@@ -165,6 +175,8 @@ namespace WPFCalculator
                 e.Key == Key.Enter ||
                 e.Key == Key.Return)
             {
+                e.Handled = true;
+
                 GetResult(GetCharacter(e.Key));
                 return;
             }
